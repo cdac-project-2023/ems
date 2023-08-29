@@ -44,10 +44,7 @@ public class UserController {
 			return userservice.showAllUser();
 		}
 		
-		@DeleteMapping("/{uid}")
-		public String deleteUser(@PathVariable Long uid) {
-			return userservice.deleteUser(uid);
-		}
+		
 		
 		//Register User
 		@PostMapping("/signup")
