@@ -24,18 +24,16 @@ public class VenueServiceImpl implements VenueService {
 	private ModelMapper mapper;
 	
 	@Override
-	public ApiResponse addVEnue(VenueDto venueDto) { //check this function through swagger it gives multiple rows in datdabases 
-		  Long c =  (long) 0;
+	public VenueDto addVEnue(VenueDto venueDto) { //check this function through swagger it gives multiple rows in datdabases 
 		    List<Venue> b = venueDao.findAll();
 		    for(Venue n : b) {
 		    	if(venueDto.getCity().equals(n.getCity())) {
-		    		return new ApiResponse(false , "This Venue is already added");
+		    		return null;
 		    	}		    		
 		    }
 		    Venue venue = this.mapper.map(venueDto, Venue.class);
-		    venue.setId(++c);
-    		this.venueDao.save(venue);		
-		return new ApiResponse(true , "Venue is Added");
+    		Venue ven = this.venueDao.save(venue);		
+		return this.mapper.map(ven, VenueDto.class);
 		
 	}
 
