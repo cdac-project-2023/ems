@@ -20,4 +20,8 @@ public class AuthRespDto {
 	private String mobNo;
 	private String state;
 	private String city;
+	private String role;
+	private String status;
+	private String jwt;
+	
 }

@@ -1,8 +1,10 @@
 package com.sunbeam.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -12,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 //Entry point of spring sec configuration
 @EnableWebSecurity // to enable web security frmwork
@@ -35,8 +40,8 @@ public class SecurityConfig {
 				.and()
 			.csrf().disable(). // disable CSRF to continue with REST APIs
 				authorizeRequests() // specify all authorization rules (i.e authorize all requests)
-				.antMatchers("/products/view", 
-						"/users/signin", 
+				.antMatchers("/auth/signIn", 
+						"/auth/signUp", 
 						"/users/signup",
 						"/swagger*/**", 
 						"/v*/api-docs/**"
@@ -44,8 +49,8 @@ public class SecurityConfig {
 																								// with /products/view :
 																								// no authentication n
 																								// authorization needed
-				.antMatchers("/products/purchase").hasRole("CUSTOMER")// only customer can purchase the products
-				.antMatchers("/products/add").hasRole("ADMIN") // only admin can add the products
+				.antMatchers("/users").hasRole("CUSTOMER")// only customer can purchase the products
+				.antMatchers("/admin").hasRole("ADMIN") // only admin can add the products
 				.anyRequest().authenticated() // all remaining end points accessible only to authenticated users
 				.and().sessionManagement() // configure HttpSession management
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // DO NOT use HttpSession for storing any sec
@@ -60,4 +65,27 @@ public class SecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
+	@Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("HEAD");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("PATCH");
+        
+        source.registerCorsConfiguration("/**", config);
+        
+        CorsFilter corsFilter = new CorsFilter(source);
+        
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(corsFilter);
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return bean;
+    }
 }

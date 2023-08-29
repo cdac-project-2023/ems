@@ -57,7 +57,8 @@ public class UserServiceImpl implements UserService {
 //			   List<UserDto>  allList = listDto.add(u);
 			 UserDto ud = new UserDto();
 			 ud.setId(u.getId());
-			 ud.setName(u.getFirstName()+ " " + u.getLastName());
+			 ud.setFirstName(u.getFirstName());
+			 ud.setLastName(u.getLastName());
 			 ud.setEmail(u.getEmail());
 			 ud.setDob(u.getDob());
 			 ud.setMobNo(u.getMobNo());
