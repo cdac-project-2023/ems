@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,23 +54,47 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	
+//	@Override //Dont delete this code it contains all validation concept
+//	public ApiResponse addBooking(BookingDto bookingDto, Long venueId, Long userId) {
+//		
+//		User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User is not found"));
+//		Venue venue = this.venueDao.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("Venue is not found"));
+//		Booking checkBook = this.bookingDao.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("There is no booking for this Venue"));
+//		Booking booked = mapper.map(bookingDto, Booking.class);
+//		if(bookingDto.getEndDate().isBefore(bookingDto.getStartDate())) {
+//			return new ApiResponse(false , "End date must be after Start date ");
+//		}
+//		else if(bookingDto.getStartDate().isAfter(checkBook.getStartDate()) && bookingDto.getStartDate().isBefore(checkBook.getEndDate())) {
+//					
+//			return new ApiResponse(false , "Venue is alreaddy booked for this date ");
+//		}
+//		else if(  bookingDto.getStartDate().isEqual(checkBook.getEndDate()) || bookingDto.getEndDate().isEqual(checkBook.getStartDate())) {
+//			return new ApiResponse(false , "there might be alreay booking at your start or end date ");
+//		}
+//		else {
+//		
+//
+//		booked.setUserBooking(user);
+//		booked.setVenueId(venue);
+//		booked.setBookingDate(LocalDate.now());
+//		this.bookingDao.save(booked);
+//
+//		return new ApiResponse(true , "Venue is Booked");
+//		}
+//	}
+	
 	@Override
 	public ApiResponse addBooking(BookingDto bookingDto, Long venueId, Long userId) {
 		
 		User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User is not found"));
 		Venue venue = this.venueDao.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("Venue is not found"));
-		Booking checkBook = this.bookingDao.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("There is no booking for this Venue"));
-		Booking booked = mapper.map(bookingDto, Booking.class);
-		if(bookingDto.getEndDate().isBefore(bookingDto.getStartDate())) {
-			return new ApiResponse(false , "End date must be after Start date ");
-		}
-		else if(bookingDto.getStartDate().isAfter(checkBook.getStartDate()) && bookingDto.getStartDate().isBefore(checkBook.getEndDate())) {
-					
-			return new ApiResponse(false , "Venue is alreaddy booked for this date ");
-		}
-		else if(  bookingDto.getStartDate().isEqual(checkBook.getEndDate()) || bookingDto.getEndDate().isEqual(checkBook.getStartDate())) {
-			return new ApiResponse(false , "there might be alreay booking at your start or end date ");
-		}
+		Booking booked = mapper.map(bookingDto, Booking.class);	
+		  List<Booking> dates = bookingDao.findBookingSdateAndEdate(bookingDto.getStartDate(), bookingDto.getEndDate());
+		  if(dates.size() != 0)
+		  {
+			  return new ApiResponse(false , "Dates are already booked");
+		  }
+
 		else {
 		
 
@@ -80,11 +106,12 @@ public class BookingServiceImpl implements BookingService {
 		return new ApiResponse(true , "Venue is Booked");
 		}
 	}
-
+	
+	
 	@Override
-	public String cancelBooking( Long bookingId) {
+	public ResponseEntity<?> cancelBooking( Long bookingId) {
 		Booking bk = bookingDao.findById(bookingId).orElseThrow(() -> new ResourceNotFoundException("Booking is not found"));
-		LocalDate d = bk.getBookingDate();
+		LocalDate d = bk.getStartDate();
 		
 		 long days = ChronoUnit.DAYS.between(LocalDate.now(), d);
 		
@@ -93,12 +120,15 @@ public class BookingServiceImpl implements BookingService {
 					bk.setStatus(StatusEnum.CANCELED);
 				}
 				else
-					return "there is no active booking";
+					return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(false , "there is no active booking"));
+//					return "there is no active booking";
 		  }
 		  else
-			  return "You will have to pay an extra amount";
+			  return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(false , "You will have to pay an extra amount"));
+//			  return "You will have to pay an extra amount";
 			  
-		  return "Your booking is cancelled";
+		 return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(true , "Your booking is cancelled\""));
+//		  return "Your booking is cancelled";
 	}
 
 	@Override

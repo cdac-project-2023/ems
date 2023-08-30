@@ -31,6 +31,8 @@ public class Venue extends BaseEntity{
 	private String city;
 	@Column(length=25)
 	private String state;
+	@Column(length=300)
+	private String description;
 	@Column
 	private double costing;
 	

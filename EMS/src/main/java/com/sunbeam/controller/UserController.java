@@ -96,11 +96,7 @@ public class UserController {
 			  return userservice.updateFeedback(feedbackdto, feedbackId , userId);
 		  }
 		  
-		  @GetMapping("/getAllFeedback")
-		  public ResponseEntity<?> getAllFeedbacks(){
-			  
-			  return ResponseEntity.status(HttpStatus.OK).body(userservice.getAllFeedbacks());
-		  }
+		  
 		
 		
 }

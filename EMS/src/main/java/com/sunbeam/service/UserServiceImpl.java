@@ -171,8 +171,8 @@ public class UserServiceImpl implements UserService {
 	
  public List<UserFeedbackDTO> getAllFeedbacks(){
 	 
-	 Long count = (long) 1 ;
-	 List<User> userList = userdao.findAll();
+//	 Long count = (long) 1 ;
+	 List<User> userList = this.userdao.findAll();
 	 
 	 List<UserFeedbackDTO> feedbackList = new ArrayList<>();
 	 
@@ -190,10 +190,12 @@ public class UserServiceImpl implements UserService {
 		 for(Feedback fb : listFB) {
 			 
 			 UserFeedbackDTO dto = new UserFeedbackDTO();
-			 System.out.println(fb.getId() + " ");
+			 System.out.println(fb.getId() + "feedback Id ");
+			 System.out.println(user.getFirstName()+ "user name ");
 			 
-			 dto.setUserId(count++);
-			 dto.setUserName(user.getFirstName() + " " + user.getLastName());
+//			 dto.setUserId(count++);
+			 dto.setFirstName(user.getFirstName());
+			 dto.setLastName(user.getLastName());
 			 dto.setEmail(fb.getEmail());
 			 dto.setVenueName(fb.getVenue().getName());
 			 dto.setMessage(fb.getMessage());

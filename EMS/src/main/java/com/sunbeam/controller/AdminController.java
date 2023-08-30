@@ -3,6 +3,8 @@ package com.sunbeam.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunbeam.dto.ApiResponse;
+import com.sunbeam.dto.GetAllBookingDto;
 import com.sunbeam.dto.UserDto;
 import com.sunbeam.dto.VenueDto;
+import com.sunbeam.service.BookingService;
 import com.sunbeam.service.UserService;
 import com.sunbeam.service.VenueService;
 
@@ -25,6 +29,9 @@ public class AdminController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BookingService bookingService;
 	
 	@GetMapping("/venue")
 	public List<VenueDto> getAllVenue(){
@@ -54,5 +61,15 @@ public class AdminController {
 	@DeleteMapping("/deletevenue/{venId}")
 	public ApiResponse removeVenue(@PathVariable Long venId) {
 		return this.vnService.deleteVenue(venId);
+	}
+	@GetMapping("/getAllFeedback")
+	  public ResponseEntity<?> getAllFeedbacks(){
+		  
+		  return ResponseEntity.status(HttpStatus.OK).body(userService.getAllFeedbacks());
+	  }
+	
+	@GetMapping("/showBookings")
+	public List<GetAllBookingDto> showBookings() {
+		return bookingService.getBooking();
 	}
 }
