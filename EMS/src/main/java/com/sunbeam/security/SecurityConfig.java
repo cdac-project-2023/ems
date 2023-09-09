@@ -42,6 +42,7 @@ public class SecurityConfig {
 				authorizeRequests() // specify all authorization rules (i.e authorize all requests)
 				.antMatchers("/auth/signIn", 
 						"/auth/signUp",
+						"/auth/contactUs",
 						"/swagger*/**", 
 						"/v*/api-docs/**"
 						).permitAll() // for incoming req ending

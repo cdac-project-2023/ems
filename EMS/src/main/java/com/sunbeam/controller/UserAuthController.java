@@ -63,8 +63,8 @@ public class UserAuthController {
         registerUserDto = userService.registerUser(request);
 
         if(registerUserDto != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(true,"User Registered sucessfully"));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse("User Registered sucessfully",true));
         }
-		 return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(false,"User Not Registered"));
+		 return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Not Registered",false));
 	}
 }

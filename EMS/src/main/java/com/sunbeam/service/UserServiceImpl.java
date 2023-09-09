@@ -114,16 +114,16 @@ public class UserServiceImpl implements UserService {
 //	            user.setGender(updateReq.getGender());
 //	            user.setModifiedAt(LocalDateTime.now());
 			userdao.save(user);
-			return new ApiResponse(true, "User Updated Successfully");
+			return new ApiResponse("User Updated Successfully",true);
 		}
-		return new ApiResponse(false, "User Not Updated");
+		return new ApiResponse("User Not Updated",false);
 	}
 
 	@Override
 	public feedbackDto addFeedback(feedbackDto feedbackdto, Long venueId, Long userId) {
-		User user = this.userdao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User is not found"));
+		User user = this.userdao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User","userId",userId));
 		Venue venue = this.venuedao.findById(venueId)
-				.orElseThrow(() -> new ResourceNotFoundException("Venue is not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Venue","venueId",venueId));
 		Feedback feedback = mapper.map(feedbackdto, Feedback.class);
 
 		feedback.setMessage(feedbackdto.getMessage());
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
 	public feedbackDto updateFeedback(feedbackDto feedbackdto, Long feedbackId, Long userId) {
 
 		Feedback feed = feedDao.findById(feedbackId)
-				.orElseThrow(() -> new ResourceNotFoundException("feedback is not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Feedback","feedbackId",feedbackId));
 		User user = userdao.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User is not found"));
 		List<User> list = feed.getUserList();
 		List<Long> userIdList = new ArrayList<>();

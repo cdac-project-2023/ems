@@ -12,7 +12,7 @@ import com.sunbeam.service.ContactUsService;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/contactUs")
+@RequestMapping("/auth/contactUs")
 public class ContactUsController {
 	@Autowired
 	private ContactUsService contactUs;

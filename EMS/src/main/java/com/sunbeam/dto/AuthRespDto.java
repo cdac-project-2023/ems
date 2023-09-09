@@ -1,5 +1,7 @@
 package com.sunbeam.dto;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ public class AuthRespDto {
 	private String gender;
 	private String email;
 	private String mobNo;
+	private LocalDate dob;
 	private String state;
 	private String city;
 	private String role;
