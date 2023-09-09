@@ -1,18 +1,16 @@
 package com.sunbeam.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiResponse {
-
-	 public boolean flag;
-	    public String message;
-
-	    public ApiResponse() {
-	        flag = false;
-	        message = "";
-	    }
-
-	    public ApiResponse(boolean flag, String message) {
-	        this.flag = flag;
-	        this.message = message;
-	    }
-
+		public String message;
+	    private boolean success;
+	    
 }

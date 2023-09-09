@@ -40,7 +40,7 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public VenueDto updateVenue(VenueDto venueDto, Long venueId) {
 	
-		Venue ven = this.venueDao.findById(venueId).orElseThrow();
+		Venue ven = this.venueDao.findById(venueId).orElseThrow(()-> new ResourceNotFoundException("Venue", "venueId", venueId));
 		
 //		if(ven != null) {
 //			ven.setCity(venueDto.getCity());
@@ -62,12 +62,12 @@ public class VenueServiceImpl implements VenueService {
 	public ApiResponse deleteVenue(Long venueId) {
 		
 
-		Venue venue = this.venueDao.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("There is no such Venue"));
+		Venue venue = this.venueDao.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("Venue","venueId",venueId));
 		if(venue != null) {
 			venueDao.deleteById(venueId);
-		return new ApiResponse(true , "Venue Successfully Deleted");
+		return new ApiResponse("Venue Successfully Deleted",true);
 		}else 
-		return new ApiResponse(false , "There is no such venue");
+		return new ApiResponse("There is no such venue",false);
 	}
 
 	@Override

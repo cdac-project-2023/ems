@@ -15,4 +15,5 @@ public interface BookingService {
 	ResponseEntity<?> cancelBooking( Long bookingId);
 	BookingDto updateBooking(Booking booking,Long BookingId);
 	List<GetAllBookingDto> getBooking(); 
+	List<BookingDto> getBookingById(Long userId);
 }
