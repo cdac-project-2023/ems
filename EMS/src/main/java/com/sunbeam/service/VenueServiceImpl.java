@@ -24,7 +24,7 @@ public class VenueServiceImpl implements VenueService {
 	private ModelMapper mapper;
 	
 	@Override
-	public VenueDto addVEnue(VenueDto venueDto) { //check this function through swagger it gives multiple rows in datdabases 
+	public VenueDto addVenue(VenueDto venueDto) { //check this function through swagger it gives multiple rows in datdabases 
 		    List<Venue> b = venueDao.findAll();
 		    for(Venue n : b) {
 		    	if(venueDto.getCity().equals(n.getCity())) {
@@ -77,6 +77,14 @@ public class VenueServiceImpl implements VenueService {
 		List<VenueDto> venueDtos = venues.stream().map(venue->this.mapper.map(venue, VenueDto.class)).collect(Collectors.toList());
 		
 		return venueDtos;
+	}
+
+	@Override
+	public VenueDto getVenueById(Long venueId) {
+		// TODO Auto-generated method stub
+		Venue ven = this.venueDao.findById(venueId).orElseThrow(()-> new ResourceNotFoundException("Venue","VenueId",venueId));
+		
+		return this.mapper.map(ven, VenueDto.class);
 	}
 
 }
