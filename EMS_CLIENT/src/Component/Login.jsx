@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 // import { toast } from 'react-toastify';
 // import { loginFailure, loginStart, loginSuccess } from '../Features/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../Service/user';
 import { login } from '../Features/authSlice';
 // import { login } from '../Features/authSlice';
@@ -99,10 +99,11 @@ const dispatch = useDispatch();
 
 return (
     <>
-    <div className="container-fluid">
+    <div className="container-fluid" style={{backgroundImage:"http://localhost:3000/Images/loginImg.jpg"}}>
+        
     <div className="maincontainer">
         <div className="container-fluid">
-            <div className="row no-gutter" style={{marginTop:20}}>
+            <div className="row no-gutter" style={{marginTop:120}}>
                
                 <div className="col-md-6 d-none d-md-flex bg-image" ><img src='http://localhost:3000/Images/loginImg.jpg' alt='error loading'/></div>
                 
@@ -124,7 +125,9 @@ return (
                   } required className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" />
                                         </div>
                                         <button className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm" onClick={loginfun}>Sign in</button>
-                                    {/* </form> */}
+                                        <div class="form-group last mb-4">Don't have a account? 
+                                            <Link to='/register'><div>Create Account</div></Link>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -132,7 +135,6 @@ return (
                 </div>
             </div>
         </div>
-        {/* <hr/> */}
       </div>
       </div>
     </>
