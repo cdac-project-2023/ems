@@ -16,6 +16,7 @@ public class VenueDto {
 	private String name;
 	private String city;
 	private String state;
+	private String imageName;
 	private String description;
 	private double costing;
 }
